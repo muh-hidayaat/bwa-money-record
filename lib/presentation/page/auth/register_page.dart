@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:money_record_app/config/app_asset.dart';
 import 'package:money_record_app/config/app_color.dart';
 import 'package:money_record_app/data/source/source_user.dart';
-import 'package:money_record_app/presentation/page/home_page.dart';
+import 'package:money_record_app/presentation/page/auth/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -22,18 +22,17 @@ class _RegisterPageState extends State<RegisterPage> {
 
   register(context) async {
     if (formKey.currentState!.validate()) {
-      bool success = await SourceUser.login(
+      bool success = await SourceUser.register(
+        context,
+        controllerName.text,
         controllerEmail.text,
         controllerPassword.text,
       );
       if (success) {
         DInfo.dialogSuccess(context, 'Berhasil Login');
         DInfo.closeDialog(context, actionAfterClose: () {
-          Get.off(() => const HomePage());
+          Get.off(() => const LoginPage());
         });
-      } else {
-        DInfo.dialogError(context, 'Berhasil Login');
-        DInfo.closeDialog(context);
       }
     }
   }
