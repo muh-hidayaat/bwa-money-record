@@ -1,7 +1,11 @@
+import 'package:d_info/d_info.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:money_record_app/config/app_asset.dart';
 import 'package:money_record_app/config/app_color.dart';
+import 'package:money_record_app/data/source/source_user.dart';
+import 'package:money_record_app/presentation/page/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,8 +18,23 @@ class _LoginPageState extends State<LoginPage> {
   final controllerEmail = TextEditingController();
   final controllerPassword = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  login() {
-    if (formKey.currentState!.validate()) {}
+
+  login(context) async {
+    if (formKey.currentState!.validate()) {
+      bool success = await SourceUser.login(
+        controllerEmail.text,
+        controllerPassword.text,
+      );
+      if (success) {
+        DInfo.dialogSuccess(context, 'Berhasil Login');
+        DInfo.closeDialog(context, actionAfterClose: () {
+          Get.off(() => const HomePage());
+        });
+      } else {
+        DInfo.dialogError(context, 'Berhasil Login');
+        DInfo.closeDialog(context);
+      }
+    }
   }
 
   @override
@@ -88,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: AppColor.primary,
                             borderRadius: BorderRadius.circular(30),
                             child: InkWell(
-                              onTap: () => login(),
+                              onTap: () => login(context),
                               borderRadius: BorderRadius.circular(30),
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(
