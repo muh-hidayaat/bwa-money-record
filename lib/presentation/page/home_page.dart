@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:money_record_app/config/app_asset.dart';
 import 'package:money_record_app/config/app_color.dart';
+import 'package:money_record_app/config/session.dart';
 import 'package:money_record_app/presentation/controller/c_user.dart';
+import 'package:money_record_app/presentation/page/auth/login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,7 +21,109 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: const Drawer(),
+      endDrawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              margin: const EdgeInsets.only(bottom: 0),
+              padding: const EdgeInsets.fromLTRB(20, 16, 16, 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(AppAsset.profile),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Obx(
+                              () {
+                                return Text(
+                                  cUser.data.name ?? '',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              },
+                            ),
+                            Obx(
+                              () {
+                                return Text(
+                                  cUser.data.email ?? '',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Material(
+                    color: AppColor.primary,
+                    borderRadius: BorderRadius.circular(30),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(30),
+                      onTap: () {
+                        Session.clearUser();
+                        Get.off(() => const LoginPage());
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 24,
+                        ),
+                        child: Text(
+                          'Logout',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            ListTile(
+              onTap: () {},
+              leading: const Icon(Icons.add),
+              horizontalTitleGap: 0,
+              title: const Text('Pemasukan'),
+              trailing: const Icon(Icons.navigate_next),
+            ),
+            ListTile(
+              onTap: () {},
+              leading: const Icon(Icons.south_west),
+              horizontalTitleGap: 0,
+              title: const Text('Pemasukan'),
+              trailing: const Icon(Icons.navigate_next),
+            ),
+            ListTile(
+              onTap: () {},
+              leading: const Icon(Icons.north_east),
+              horizontalTitleGap: 0,
+              title: const Text('Pengeluaran'),
+              trailing: const Icon(Icons.navigate_next),
+            ),
+            ListTile(
+              onTap: () {},
+              leading: const Icon(Icons.history),
+              horizontalTitleGap: 0,
+              title: const Text('Riwayat'),
+              trailing: const Icon(Icons.navigate_next),
+            ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           header(),
@@ -53,30 +157,7 @@ class _HomePageState extends State<HomePage> {
                     ),
               ),
               DView.spaceHeight(),
-              AspectRatio(
-                aspectRatio: 16 / 9,
-                child: DChartBar(
-                  data: const [
-                    {
-                      'id': 'Bar',
-                      'data': [
-                        {'domain': '2023', 'measure': 3},
-                        {'domain': '2024', 'measure': 5},
-                        {'domain': '2025', 'measure': 7},
-                        {'domain': '2026', 'measure': 1},
-                      ],
-                    }
-                  ],
-                  domainLabelPaddingToAxisLine: 16,
-                  axisLineTick: 2,
-                  axisLinePointTick: 2,
-                  axisLinePointWidth: 10,
-                  axisLineColor: Colors.green,
-                  measureLabelPaddingToAxisLine: 16,
-                  barColor: (barData, index, id) => Colors.green,
-                  showBarValue: true,
-                ),
-              ),
+              weekly(),
               DView.spaceHeight(),
               Text(
                 'Perbandingan Bulan ini',
@@ -85,81 +166,111 @@ class _HomePageState extends State<HomePage> {
                     ),
               ),
               DView.spaceHeight(),
-              Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.width * 0.5,
-                    child: Stack(
-                      children: [
-                        DChartPie(
-                          data: const [
-                            {'domain': '2023', 'measure': 28},
-                            {'domain': '2024', 'measure': 27},
-                          ],
-                          fillColor: (pieData, index) => Colors.purple,
-                          donutWidth: 30,
-                          labelColor: Colors.white,
-                        ),
-                        Center(
-                          child: Text(
-                            '60%',
-                            style:
-                                Theme.of(context).textTheme.headline4!.copyWith(
-                                      color: AppColor.primary,
-                                    ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 16,
-                            height: 16,
-                            color: AppColor.primary,
-                          ),
-                          DView.spaceWidth(8),
-                          const Text('Pemasukan'),
-                        ],
-                      ),
-                      DView.spaceHeight(8),
-                      Row(
-                        children: [
-                          Container(
-                            width: 16,
-                            height: 16,
-                            color: AppColor.chart,
-                          ),
-                          DView.spaceWidth(8),
-                          const Text('Pegneluaran'),
-                        ],
-                      ),
-                      DView.spaceHeight(20),
-                      const Text('Pemasukan'),
-                      const Text('lebih besar 20%'),
-                      const Text('dari pengeluaran'),
-                      DView.spaceHeight(10),
-                      const Text('Atau setara :'),
-                      const Text(
-                        'Rp.200.000',
-                        style: TextStyle(
-                          color: AppColor.primary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
+              monthly(context)
             ],
           ))
         ],
+      ),
+    );
+  }
+
+  Row monthly(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.5,
+          height: MediaQuery.of(context).size.width * 0.5,
+          child: Stack(
+            children: [
+              DChartPie(
+                data: const [
+                  {'domain': '2023', 'measure': 28},
+                  {'domain': '2024', 'measure': 27},
+                ],
+                fillColor: (pieData, index) => Colors.purple,
+                donutWidth: 30,
+                labelColor: Colors.white,
+              ),
+              Center(
+                child: Text(
+                  '60%',
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        color: AppColor.primary,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 16,
+                  height: 16,
+                  color: AppColor.primary,
+                ),
+                DView.spaceWidth(8),
+                const Text('Pemasukan'),
+              ],
+            ),
+            DView.spaceHeight(8),
+            Row(
+              children: [
+                Container(
+                  width: 16,
+                  height: 16,
+                  color: AppColor.chart,
+                ),
+                DView.spaceWidth(8),
+                const Text('Pegneluaran'),
+              ],
+            ),
+            DView.spaceHeight(20),
+            const Text('Pemasukan'),
+            const Text('lebih besar 20%'),
+            const Text('dari pengeluaran'),
+            DView.spaceHeight(10),
+            const Text('Atau setara :'),
+            const Text(
+              'Rp.200.000',
+              style: TextStyle(
+                color: AppColor.primary,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  AspectRatio weekly() {
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: DChartBar(
+        data: const [
+          {
+            'id': 'Bar',
+            'data': [
+              {'domain': '2023', 'measure': 3},
+              {'domain': '2024', 'measure': 5},
+              {'domain': '2025', 'measure': 7},
+              {'domain': '2026', 'measure': 1},
+            ],
+          }
+        ],
+        domainLabelPaddingToAxisLine: 16,
+        axisLineTick: 2,
+        axisLinePointTick: 2,
+        axisLinePointWidth: 10,
+        axisLineColor: Colors.green,
+        measureLabelPaddingToAxisLine: 16,
+        barColor: (barData, index, id) => Colors.green,
+        showBarValue: true,
       ),
     );
   }
