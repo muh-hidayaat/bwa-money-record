@@ -7,7 +7,7 @@ class CHome extends GetxController {
   final _today = 0.0.obs;
   double get today => _today.value;
 
-  final _todayPercent = '0'.obs;
+  final _todayPercent = ''.obs;
   String get todayPercent => _todayPercent.value;
 
   // week
@@ -59,7 +59,7 @@ class CHome extends GetxController {
         ? '100% sama dengan kemarin'
         : isPlus
             ? '+${percent.toStringAsFixed(1)}% dibanding kemarin'
-            : '-${percent.toString}gAsFixed(1)}% dibanding kemarin';
+            : '-${percent.toStringAsFixed(1)}% dibanding kemarin';
 
     //weekly analysis
     _week.value = List.castFrom(data['week'].map((e) => e.toDouble()).toList());

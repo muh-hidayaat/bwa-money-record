@@ -36,46 +36,51 @@ class _HomePageState extends State<HomePage> {
         children: [
           header(),
           Expanded(
-              child: ListView(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-            children: [
-              Text(
-                'Pengeluaran Hari ini',
-                style: Theme.of(context).textTheme.headline6!.copyWith(
-                      fontWeight: FontWeight.bold,
+              child: RefreshIndicator(
+            onRefresh: () async {
+              cHome.getAnalysis(cUser.data.idUser!);
+            },
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+              children: [
+                Text(
+                  'Pengeluaran Hari ini',
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                DView.spaceHeight(),
+                cardToday(context),
+                DView.spaceHeight(30),
+                Center(
+                  child: Container(
+                    height: 5,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: AppColor.bg,
+                      borderRadius: BorderRadius.circular(30),
                     ),
-              ),
-              DView.spaceHeight(),
-              cardToday(context),
-              DView.spaceHeight(30),
-              Center(
-                child: Container(
-                  height: 5,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    color: AppColor.bg,
-                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-              ),
-              Text(
-                'Pengeluaran Minggu ini',
-                style: Theme.of(context).textTheme.headline6!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              DView.spaceHeight(),
-              weekly(),
-              DView.spaceHeight(),
-              Text(
-                'Perbandingan Bulan ini',
-                style: Theme.of(context).textTheme.headline6!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              DView.spaceHeight(),
-              monthly(context)
-            ],
+                Text(
+                  'Pengeluaran Minggu ini',
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                DView.spaceHeight(),
+                weekly(),
+                DView.spaceHeight(),
+                Text(
+                  'Perbandingan Bulan ini',
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                DView.spaceHeight(),
+                monthly(context)
+              ],
+            ),
           ))
         ],
       ),
@@ -157,7 +162,7 @@ class _HomePageState extends State<HomePage> {
           ),
           ListTile(
             onTap: () {
-              Get.to(() => const AddHistoryPage())?.then((value) {
+              Get.to(() => AddHistoryPage())?.then((value) {
                 if (value ?? false) {
                   cHome.getAnalysis(cUser.data.idUser!);
                 }
@@ -258,7 +263,7 @@ class _HomePageState extends State<HomePage> {
                   color: AppColor.chart,
                 ),
                 DView.spaceWidth(8),
-                const Text('Pegneluaran'),
+                const Text('Pengeluaran'),
               ],
             ),
             DView.spaceHeight(20),
