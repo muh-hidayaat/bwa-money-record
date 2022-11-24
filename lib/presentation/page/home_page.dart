@@ -9,6 +9,7 @@ import 'package:money_record_app/config/session.dart';
 import 'package:money_record_app/presentation/controller/c_home.dart';
 import 'package:money_record_app/presentation/controller/c_user.dart';
 import 'package:money_record_app/presentation/page/auth/login_page.dart';
+import 'package:money_record_app/presentation/page/history/add_history_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -155,10 +156,16 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const AddHistoryPage())?.then((value) {
+                if (value ?? false) {
+                  cHome.getAnalysis(cUser.data.idUser!);
+                }
+              });
+            },
             leading: const Icon(Icons.add),
             horizontalTitleGap: 0,
-            title: const Text('Pemasukan'),
+            title: const Text('Tambah Baru'),
             trailing: const Icon(Icons.navigate_next),
           ),
           ListTile(
