@@ -10,6 +10,7 @@ import 'package:money_record_app/presentation/controller/c_home.dart';
 import 'package:money_record_app/presentation/controller/c_user.dart';
 import 'package:money_record_app/presentation/page/auth/login_page.dart';
 import 'package:money_record_app/presentation/page/history/add_history_page.dart';
+import 'package:money_record_app/presentation/page/history/income_outcome_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -174,14 +175,22 @@ class _HomePageState extends State<HomePage> {
             trailing: const Icon(Icons.navigate_next),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Get.to(
+                () => const IncomeOutcomePage(type: 'Pemasukan'),
+              );
+            },
             leading: const Icon(Icons.south_west),
             horizontalTitleGap: 0,
             title: const Text('Pemasukan'),
             trailing: const Icon(Icons.navigate_next),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Get.to(
+                () => const IncomeOutcomePage(type: 'Pengeluaran'),
+              );
+            },
             leading: const Icon(Icons.north_east),
             horizontalTitleGap: 0,
             title: const Text('Pengeluaran'),
