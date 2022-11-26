@@ -135,6 +135,39 @@ class SourceHistory {
     return [];
   }
 
+  static Future<List<History>> history(String idUser) async {
+    String url = '${Api.history}/history.php';
+    Map? responseBody = await AppRequest.post(url, {
+      'id_user': idUser,
+    });
+
+    if (responseBody == null) return [];
+
+    if (responseBody['success']) {
+      List list = responseBody['data'];
+      return list.map((e) => History.fromJson(e)).toList();
+    }
+
+    return [];
+  }
+
+  static Future<List<History>> historySearch(String idUser, String date) async {
+    String url = '${Api.history}/history_search.php';
+    Map? responseBody = await AppRequest.post(url, {
+      'id_user': idUser,
+      'date': date,
+    });
+
+    if (responseBody == null) return [];
+
+    if (responseBody['success']) {
+      List list = responseBody['data'];
+      return list.map((e) => History.fromJson(e)).toList();
+    }
+
+    return [];
+  }
+
   static Future<History?> whereDate(
       String idUser, String date, String type) async {
     String url = '${Api.history}/where_date.php';
