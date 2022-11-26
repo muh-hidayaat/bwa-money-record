@@ -3,6 +3,7 @@ import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:money_record_app/presentation/page/history/detail_history_page.dart';
 
 import '../../../config/app_color.dart';
 import '../../../config/app_format.dart';
@@ -124,7 +125,13 @@ class _HistoryPageState extends State<HistoryPage> {
                   index == _.list.length - 1 ? 16 : 8,
                 ),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(DetailHistoryPage(
+                      idUser: cUser.data.idUser!,
+                      date: history.date!,
+                      type: history.type!,
+                    ));
+                  },
                   borderRadius: BorderRadius.circular(4),
                   child: Row(
                     children: [
