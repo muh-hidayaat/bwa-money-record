@@ -59,6 +59,46 @@ class SourceHistory {
     return responseBody['success'];
   }
 
+  static Future<bool> update(context, String idHistory, String idUser,
+      String date, String type, String details, String total) async {
+    String url = '${Api.history}/update.php';
+    Map? responseBody = await AppRequest.post(url, {
+      'id_history': idHistory,
+      'id_user': idUser,
+      'date': date,
+      'type': type,
+      'details': details,
+      'total': total,
+      'updated_at': DateTime.now().toIso8601String(),
+    });
+
+    if (responseBody == null) return false;
+
+    if (responseBody['success']) {
+      DInfo.dialogSuccess(context, 'Berhasil Update History');
+      DInfo.closeDialog(context);
+    } else {
+      if (responseBody['message'] == 'date') {
+        DInfo.dialogError(context, 'Tanggal History ada yang bentrok');
+      } else {
+        DInfo.dialogError(context, 'Gagal Tambah History');
+      }
+      DInfo.closeDialog(context);
+    }
+
+    return responseBody['success'];
+  }
+
+  static Future<bool> delete(String idHistory) async {
+    String url = '${Api.history}/delete.php';
+    Map? responseBody = await AppRequest.post(url, {
+      'id_history': idHistory,
+    });
+
+    if (responseBody == null) return false;
+    return responseBody['success'];
+  }
+
   static Future<List<History>> incomeOutcome(String idUser, String type) async {
     String url = '${Api.history}/income_outcome.php';
     Map? responseBody = await AppRequest.post(url, {
@@ -93,5 +133,24 @@ class SourceHistory {
     }
 
     return [];
+  }
+
+  static Future<History?> whereDate(
+      String idUser, String date, String type) async {
+    String url = '${Api.history}/where_date.php';
+    Map? responseBody = await AppRequest.post(url, {
+      'id_user': idUser,
+      'date': date,
+      'type': type,
+    });
+
+    if (responseBody == null) return null;
+
+    if (responseBody['success']) {
+      var e = responseBody['data'];
+      return History.fromJson(e);
+    }
+
+    return null;
   }
 }
